@@ -35,11 +35,33 @@ def interpret_wind_direction(direction):
     }
     return direction_mapping.get(direction, 'from an unknown direction')
 
+def interpret_wind_speed(speed):
+    if speed < 0.3:
+        return "Calm"
+    elif 0.3 <= speed < 3.4:
+        return "Light"
+    elif 3.4 <= speed < 8.0:
+        return "Moderate"
+    elif 8.0 <= speed < 10.8:
+        return "Fresh"
+    elif 10.8 <= speed < 17.2:
+        return "Strong"
+    elif 17.2 <= speed < 24.5:
+        return "Gale"
+    elif 24.5 <= speed < 32.6:
+        return "Storm"
+    else:
+        return "Hurricane"
+
+
+
 
 def show_weather_to_user(weather_data_list):
     for weather_data in weather_data_list:
         hour_number = weather_data['timepoint']
         temperature = weather_data['temp2m']
+        wind_speed = weather_data['wind10m']['speed']
+        descriptive_wind_speed = interpret_wind_speed(wind_speed)
         wind_direction = weather_data['wind10m']['direction']
         descriptive_wind_direction = interpret_wind_direction(wind_direction)
         print(f'On hour {hour_number},')
@@ -50,7 +72,8 @@ def show_weather_to_user(weather_data_list):
         elif hour_number == 72:
             print('(in three days)')
 
-        print(f'The temperature is {temperature}°C and the wind is coming from the {descriptive_wind_direction}')
+        print(f'The temperature is {temperature}°C and the wind is approaching at {wind_speed}m/s '
+              f'({descriptive_wind_speed}) {descriptive_wind_direction}')
 
 
 def show_weather():
